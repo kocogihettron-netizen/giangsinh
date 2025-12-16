@@ -133,7 +133,7 @@ function createSnowflake() {
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Gán Nội dung Cá nhân hóa động vào HTML 
-    document.querySelector('.to-text').innerHTML = `Gửi <strong>${CRUSH_NAME}</strong> yêu dấu,`;
+    document.querySelector('.to-text').innerHTML = `Gửi <strong>${CRUSH_NAME}</strong> ,`;
     document.querySelector('.memory-box').innerHTML = MEMORY_TEXT;
     document.querySelector('.final-build-up').innerHTML = BUILD_UP_TEXT;
 
