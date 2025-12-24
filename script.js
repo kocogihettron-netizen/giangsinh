@@ -1,25 +1,33 @@
 const CRUSH_NAME = "Quỳnh Anh";
 const MEMORY_TEXT = "Đêm Giáng sinh này, tớ có vài lời muốn nhắn nhủ...";
 const BUILD_UP_TEXT = "Cảm ơn cậu vì đã luôn rạng rỡ, nụ cười của cậu thực sự rất xinh đẹp.";
-const CONFESSION_MESSAGE = `Tớ định giữ kín chuyện này cho riêng mình, nhưng tớ nhận ra cảm xúc dành cho cậu cứ lớn dần lên theo thời gian. Tớ thích cách cậu cười, thích cả sự hiện diện của cậu trong những ngày qua. Thật lòng, tớ thích cậu . Trang web này là món quà nhỏ để tớ gửi lời tạm biệt những ngày tháng tương tư cậu .`;
+const CONFESSION_MESSAGE = `Tớ định giữ kín chuyện này cho riêng mình, nhưng tớ nhận ra cảm xúc dành cho cậu cứ lớn dần lên theo thời gian. Tớ thích cách cậu cười, thích cả sự hiện diện của cậu trong những ngày qua. Thật lòng, tớ thích cậu.`;
 
 function changePhase(currentId, nextId) {
     const curr = document.getElementById(currentId);
-    curr.style.opacity = 0;
+    const next = document.getElementById(nextId);
+    
+    curr.classList.remove('active');
     setTimeout(() => {
         curr.style.display = 'none';
-        const next = document.getElementById(nextId);
         next.style.display = 'block';
         setTimeout(() => {
             next.classList.add('active');
-            if (nextId === 'phase-3') startTypingEffect('confession-text', CONFESSION_MESSAGE, 50);
+            if (nextId === 'phase-3') {
+                // Reset phase 3 
+                document.getElementById('btn-back-p3').classList.remove('hidden');
+                startTypingEffect('confession-text', CONFESSION_MESSAGE, 50);
+            }
         }, 50);
-    }, 500);
+    }, 400);
 }
 
 function startTypingEffect(elementId, text, speed) {
     const element = document.getElementById(elementId);
     let i = 0; element.innerHTML = '';
+    // nút quay lại và nút phản hồi
+    document.querySelector('.response-buttons').classList.add('hidden');
+    
     const interval = setInterval(() => {
         if (i < text.length) {
             element.innerHTML += text.charAt(i); i++;
@@ -33,29 +41,28 @@ function startTypingEffect(elementId, text, speed) {
 function handleResponse(isAccepted) {
     const text = document.getElementById('confession-text');
     const buttonContainer = document.querySelector('.response-buttons');
-    const confessionBox = document.querySelector('.confession-box');
+    const backBtnP3 = document.getElementById('btn-back-p3');
     
     buttonContainer.classList.add('hidden');
-    text.style.transition = "all 1s";
+    backBtnP3.classList.add('hidden'); // Ẩn nút quay lại 
     
-    if(isAccepted) {
-        text.style.color = "#ffd700";
-        text.innerHTML = "Cảm ơn cậu vì đã đến ❤️";
-    } else {
-        text.style.color = "#ffffff";
-        text.innerHTML = "Hãy luôn tự tin và tỏa sáng nhé! ✨";
-    }
+    text.style.transition = "all 1s";
+    text.style.color = "#ffd700";
+    text.innerHTML = "Cảm ơn cậu vì đã lắng nghe trái tim tớ. Giáng sinh ấm áp nhé! ❤️";
 
-    const backBtn = document.createElement('button');
-    backBtn.innerHTML = "← Quay lại lựa chọn";
-    backBtn.className = "back-choice-btn";
-    backBtn.onclick = () => {
-        buttonContainer.classList.remove('hidden');
+    // xem lại
+    const resetBtn = document.createElement('button');
+    resetBtn.innerHTML = "← Xem lại lời nhắn";
+    resetBtn.className = "back-btn";
+    resetBtn.style.marginTop = "20px";
+    resetBtn.onclick = () => {
         text.style.color = "#f8f9fa";
         text.innerHTML = CONFESSION_MESSAGE;
-        backBtn.remove();
+        buttonContainer.classList.remove('hidden');
+        backBtnP3.classList.remove('hidden');
+        resetBtn.remove();
     };
-    confessionBox.appendChild(backBtn);
+    document.querySelector('.confession-box').appendChild(resetBtn);
 }
 
 function createSnowflake() {
